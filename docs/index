@@ -1,0 +1,498 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a//dev/null b/docs/frontend-preview/index.html
+index 0000000000000000000000000000000000000000..c130f3f6fd5089cc4db4279278d3498a32ff8dbf 100644
+--- a//dev/null
++++ b/docs/frontend-preview/index.html
+@@ -0,0 +1,489 @@
++<!DOCTYPE html>
++<html lang="pt-BR">
++  <head>
++    <meta charset="UTF-8" />
++    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++    <title>Lilu - Prévia do Prontuário do Profissional</title>
++    <link rel="stylesheet" href="styles.css" />
++  </head>
++  <body>
++    <header class="app-header">
++      <div class="logo">Lilu</div>
++      <nav>
++        <button class="nav-btn" data-screen="dashboard">Dashboard</button>
++        <button class="nav-btn" data-screen="profile">Perfil</button>
++        <button class="nav-btn" data-screen="compliance">Compliance</button>
++        <button class="nav-btn" data-screen="licensing">Licenciamento</button>
++        <button class="nav-btn" data-screen="wallet">Health Wallet</button>
++        <button class="nav-btn" data-screen="interoperability">Interoperabilidade</button>
++        <button class="nav-btn" data-screen="engagement">Engajamento</button>
++        <button class="nav-btn" data-screen="security">Segurança</button>
++      </nav>
++    </header>
++
++    <main>
++      <aside class="side-panel">
++        <div class="professional-card">
++          <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=200&q=80" alt="Foto profissional" />
++          <h2>Dra. Ana Paula Ribeiro</h2>
++          <p class="role">Cardiologista • CRM-SP 123456</p>
++          <span class="badge status" data-state="active">Registro ativo</span>
++          <span class="badge license" data-state="active">Licença ativa</span>
++        </div>
++        <section class="quick-stats">
++          <h3>Visão rápida</h3>
++          <ul>
++            <li>
++              <span class="label">Último acesso</span>
++              <span class="value">18/03/2024 09:12</span>
++            </li>
++            <li>
++              <span class="label">Pacientes conectados</span>
++              <span class="value">134</span>
++            </li>
++            <li>
++              <span class="label">NPS</span>
++              <span class="value positive">68</span>
++            </li>
++            <li>
++              <span class="label">Alertas</span>
++              <span class="value attention">0 críticos</span>
++            </li>
++          </ul>
++        </section>
++      </aside>
++
++      <section class="screen" id="dashboard" data-active>
++        <h1>Dashboard do Profissional</h1>
++        <div class="grid">
++          <article class="card">
++            <header>
++              <h2>Status da Licença</h2>
++              <span class="badge license" data-state="active">Ativa</span>
++            </header>
++            <p>Plano: <strong>Mensal</strong> • Próxima renovação em <strong>01/04/2024</strong>.</p>
++            <button class="primary">Gerenciar pagamento</button>
++          </article>
++
++          <article class="card">
++            <header>
++              <h2>Consentimentos ativos</h2>
++              <span class="badge neutral">12</span>
++            </header>
++            <p>4 pacientes aguardando resposta. 1 consentimento expira em 5 dias.</p>
++            <button class="secondary">Revisar consentimentos</button>
++          </article>
++
++          <article class="card">
++            <header>
++              <h2>Uso nos últimos 30 dias</h2>
++            </header>
++            <div class="usage">
++              <div>
++                <span class="usage-number">18</span>
++                <span class="usage-label">logins</span>
++              </div>
++              <div>
++                <span class="usage-number">45</span>
++                <span class="usage-label">registros criados</span>
++              </div>
++            </div>
++          </article>
++        </div>
++
++        <section class="timeline">
++          <h2>Eventos recentes</h2>
++          <ul>
++            <li>
++              <time>18/03/2024 09:12</time>
++              <div>
++                <strong>Consulta visualizada</strong>
++                <p>Paciente: João Martins • Consentimento completo</p>
++              </div>
++            </li>
++            <li>
++              <time>17/03/2024 16:04</time>
++              <div>
++                <strong>Prescrição emitida</strong>
++                <p>Paciente: Marina Lopes • Envio para FHIR MedicationRequest</p>
++              </div>
++            </li>
++            <li>
++              <time>17/03/2024 09:30</time>
++              <div>
++                <strong>Alerta de inadimplência removido</strong>
++                <p>Pagamento confirmado via cartão Visa final 1234</p>
++              </div>
++            </li>
++          </ul>
++        </section>
++      </section>
++
++      <section class="screen" id="profile">
++        <h1>Perfil & Dados Pessoais</h1>
++        <div class="form-grid">
++          <label>Nome completo
++            <input type="text" value="Ana Paula Ribeiro" readonly />
++          </label>
++          <label>CPF
++            <input type="text" value="123.456.789-00" readonly />
++          </label>
++          <label>Email
++            <input type="email" value="ana.ribeiro@clinicavida.com" />
++          </label>
++          <label>Telefone
++            <input type="tel" value="+55 11 91234-5678" />
++          </label>
++          <label>Endereço profissional
++            <input type="text" value="Rua das Flores, 100 - São Paulo/SP" />
++          </label>
++          <label>Data de nascimento
++            <input type="date" value="1985-06-12" />
++          </label>
++        </div>
++
++        <section class="card">
++          <header>
++            <h2>Formação & Experiência</h2>
++            <span class="badge neutral">Atualizado</span>
++          </header>
++          <ul class="list">
++            <li>
++              <strong>Graduação em Medicina</strong> • USP (2009)
++            </li>
++            <li>
++              <strong>Residência em Cardiologia</strong> • HCor (2012)
++            </li>
++            <li>
++              <strong>Curso ACLS</strong> • 2023 • American Heart Association
++            </li>
++          </ul>
++        </section>
++      </section>
++
++      <section class="screen" id="compliance">
++        <h1>Compliance & Documentos</h1>
++        <div class="grid">
++          <article class="card">
++            <header>
++              <h2>Status do Conselho</h2>
++              <span class="badge status" data-state="active">Verificado</span>
++            </header>
++            <p>Validado em 18/03/2024 via integração CRM-SP.</p>
++          </article>
++          <article class="card">
++            <header>
++              <h2>Termos de privacidade</h2>
++              <span class="badge neutral">v3.2</span>
++            </header>
++            <p>Aceito em 10/01/2024 às 12:00 (IP 200.100.50.10).</p>
++          </article>
++        </div>
++
++        <section class="card">
++          <header>
++            <h2>Certificados anexados</h2>
++            <button class="secondary">Enviar novo</button>
++          </header>
++          <table>
++            <thead>
++              <tr>
++                <th>Documento</th>
++                <th>Validade</th>
++                <th>Status</th>
++              </tr>
++            </thead>
++            <tbody>
++              <tr>
++                <td>CRM_Comprovante.pdf</td>
++                <td>31/12/2025</td>
++                <td><span class="badge status" data-state="active">Válido</span></td>
++              </tr>
++              <tr>
++                <td>LGPD_Assinatura.pdf</td>
++                <td>Indeterminada</td>
++                <td><span class="badge neutral">Registrado</span></td>
++              </tr>
++            </tbody>
++          </table>
++        </section>
++      </section>
++
++      <section class="screen" id="licensing">
++        <h1>Licenciamento Lilu</h1>
++        <article class="card highlight">
++          <header>
++            <h2>Plano atual</h2>
++            <span class="badge license" data-state="active">Mensal</span>
++          </header>
++          <p>Valor: <strong>R$ 249,00</strong> • Vigência: 01/03/2024 a 31/03/2024</p>
++          <div class="toggles">
++            <label class="switch">
++              <input type="checkbox" id="auto-renew" checked />
++              <span class="slider"></span>
++            </label>
++            <span>Renovação automática</span>
++          </div>
++        </article>
++
++        <section class="card">
++          <header>
++            <h2>Histórico de faturas</h2>
++          </header>
++          <table>
++            <thead>
++              <tr>
++                <th>Nº</th>
++                <th>Vencimento</th>
++                <th>Status</th>
++                <th>Pagamento</th>
++              </tr>
++            </thead>
++            <tbody>
++              <tr>
++                <td>FT-2024-0003</td>
++                <td>10/03/2024</td>
++                <td><span class="badge status" data-state="active">Paga</span></td>
++                <td>08/03/2024</td>
++              </tr>
++              <tr>
++                <td>FT-2024-0002</td>
++                <td>10/02/2024</td>
++                <td><span class="badge status" data-state="active">Paga</span></td>
++                <td>05/02/2024</td>
++              </tr>
++              <tr>
++                <td>FT-2024-0001</td>
++                <td>10/01/2024</td>
++                <td><span class="badge status" data-state="inactive">Em aberto</span></td>
++                <td>-</td>
++              </tr>
++            </tbody>
++          </table>
++        </section>
++      </section>
++
++      <section class="screen" id="wallet">
++        <h1>Health Wallet & Consentimentos</h1>
++        <div class="consent-grid">
++          <article class="card patient" data-state="full">
++            <header>
++              <div>
++                <h2>João Martins</h2>
++                <p>Consentimento completo</p>
++              </div>
++              <span class="badge status" data-state="active">Acesso total</span>
++            </header>
++            <div class="scopes">
++              <span class="chip active">Consultas</span>
++              <span class="chip active">Prescrições</span>
++              <span class="chip active">Exames</span>
++              <span class="chip active">Evoluções</span>
++            </div>
++            <footer>
++              <small>Atualizado em 15/03/2024 14:22</small>
++              <button class="secondary">Ver registros</button>
++            </footer>
++          </article>
++
++          <article class="card patient" data-state="partial">
++            <header>
++              <div>
++                <h2>Marina Lopes</h2>
++                <p>Consentimento parcial</p>
++              </div>
++              <span class="badge status" data-state="warning">Acesso limitado</span>
++            </header>
++            <div class="scopes">
++              <span class="chip active">Consultas</span>
++              <span class="chip inactive">Prescrições</span>
++              <span class="chip inactive">Exames</span>
++              <span class="chip active">Evoluções</span>
++            </div>
++            <footer>
++              <small>Atualizado em 12/03/2024 09:10</small>
++              <button class="secondary">Solicitar ampliação</button>
++            </footer>
++          </article>
++
++          <article class="card patient" data-state="revoked">
++            <header>
++              <div>
++                <h2>Ricardo Pena</h2>
++                <p>Consentimento revogado</p>
++              </div>
++              <span class="badge status" data-state="inactive">Bloqueado</span>
++            </header>
++            <div class="scopes">
++              <span class="chip inactive">Consultas</span>
++              <span class="chip inactive">Prescrições</span>
++              <span class="chip inactive">Exames</span>
++              <span class="chip inactive">Evoluções</span>
++            </div>
++            <footer>
++              <small>Revogado em 10/03/2024 18:40</small>
++              <button class="primary">Solicitar novo consentimento</button>
++            </footer>
++          </article>
++        </div>
++
++        <section class="card">
++          <header>
++            <h2>Logs de acesso recentes</h2>
++            <button class="secondary">Exportar CSV</button>
++          </header>
++          <table>
++            <thead>
++              <tr>
++                <th>Horário</th>
++                <th>Ação</th>
++                <th>Recurso</th>
++                <th>Resultado</th>
++              </tr>
++            </thead>
++            <tbody>
++              <tr>
++                <td>18/03/2024 09:12</td>
++                <td>wallet.read</td>
++                <td>Patient/999</td>
++                <td><span class="badge status" data-state="active">Permitido</span></td>
++              </tr>
++              <tr>
++                <td>17/03/2024 16:04</td>
++                <td>MedicationRequest.create</td>
++                <td>MedicationRequest/mr-111</td>
++                <td><span class="badge status" data-state="active">Sucesso</span></td>
++              </tr>
++              <tr>
++                <td>17/03/2024 08:22</td>
++                <td>wallet.read</td>
++                <td>Patient/888</td>
++                <td><span class="badge status" data-state="inactive">Bloqueado</span></td>
++              </tr>
++            </tbody>
++          </table>
++        </section>
++      </section>
++
++      <section class="screen" id="interoperability">
++        <h1>Interoperabilidade & Integrações</h1>
++        <div class="grid">
++          <article class="card">
++            <header>
++              <h2>Bundles FHIR</h2>
++              <button class="secondary">Exportar Bundle</button>
++            </header>
++            <p>Último bundle gerado em 14/03/2024 às 18:00.</p>
++            <ul class="list compact">
++              <li>Practitioner/12345</li>
++              <li>Encounter/enc-001</li>
++              <li>Observation/obs-999</li>
++              <li>MedicationRequest/mr-111</li>
++              <li>DocumentReference/doc-555</li>
++            </ul>
++          </article>
++          <article class="card">
++            <header>
++              <h2>Status das integrações</h2>
++            </header>
++            <ul class="status-list">
++              <li><span class="dot ok"></span> FHIR Gateway</li>
++              <li><span class="dot warn"></span> HL7 Listener</li>
++              <li><span class="dot ok"></span> Assinatura Digital</li>
++              <li><span class="dot error"></span> Integração Laboratório VidaLab</li>
++            </ul>
++          </article>
++        </div>
++      </section>
++
++      <section class="screen" id="engagement">
++        <h1>Engajamento & Performance</h1>
++        <div class="grid">
++          <article class="card">
++            <header>
++              <h2>Resumo do período</h2>
++            </header>
++            <div class="stats">
++              <div>
++                <span class="stats-number">134</span>
++                <span class="stats-label">Pacientes conectados</span>
++              </div>
++              <div>
++                <span class="stats-number">45</span>
++                <span class="stats-label">Evoluções registradas</span>
++              </div>
++              <div>
++                <span class="stats-number positive">+12%</span>
++                <span class="stats-label">Variação mensal</span>
++              </div>
++            </div>
++          </article>
++          <article class="card">
++            <header>
++              <h2>Feedbacks recentes</h2>
++              <button class="secondary">Filtrar</button>
++            </header>
++            <ul class="list">
++              <li>
++                <strong>NPS 9</strong> • "Ótimo atendimento e clareza nas orientações"
++                <span class="meta">25/02/2024</span>
++              </li>
++              <li>
++                <strong>NPS 6</strong> • "Gostaria de mais horários disponíveis"
++                <span class="meta">18/02/2024</span>
++              </li>
++            </ul>
++          </article>
++        </div>
++      </section>
++
++      <section class="screen" id="security">
++        <h1>Segurança & Auditoria</h1>
++        <div class="grid">
++          <article class="card">
++            <header>
++              <h2>Autenticação</h2>
++            </header>
++            <p>MFA obrigatório habilitado.</p>
++            <button class="secondary">Reconfigurar MFA</button>
++          </article>
++          <article class="card">
++            <header>
++              <h2>Papéis ativos</h2>
++            </header>
++            <ul class="list compact">
++              <li>profissional</li>
++              <li>coordenador</li>
++            </ul>
++          </article>
++          <article class="card">
++            <header>
++              <h2>Logs de auditoria</h2>
++              <button class="secondary">Ver todos</button>
++            </header>
++            <ul class="timeline compact">
++              <li>
++                <time>18/03/2024 09:12</time> wallet.read • Patient/999 • permitido
++              </li>
++              <li>
++                <time>17/03/2024 16:04</time> medication.create • MedicationRequest/mr-111 • sucesso
++              </li>
++              <li>
++                <time>17/03/2024 08:22</time> wallet.read • Patient/888 • bloqueado
++              </li>
++            </ul>
++          </article>
++        </div>
++      </section>
++    </main>
++
++    <div class="state-toggle">
++      <span>Simular licença:</span>
++      <button data-license="active" class="active">Ativa</button>
++      <button data-license="delinquent">Inadimplente</button>
++      <button data-license="suspended">Suspensa</button>
++    </div>
++
++    <script src="script.js"></script>
++  </body>
++</html>
+ 
+EOF
+)
