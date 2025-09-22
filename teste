@@ -1,0 +1,210 @@
+# 1. Checklist de Campos
+
+**Dados Pessoais**
+- nome: "Dra. Maria Oliveira"
+- cpf: "123.456.789-09"
+- nascimento: "1985-07-01"
+- contatos: 
+  - email: "maria@exemplo.com"
+  - telefone: "+55 11 98765-4321"
+- foto_url: "https://lilu.com/fotos/123.jpg"
+
+**Credenciais**
+- conselho: "CRM"
+- numero_conselho: "123456"
+- uf_conselho: "SP"
+- especialidades: ["Clínica Geral", "Nutrologia"]
+- formacao: "Medicina - USP"
+- cursos: ["Pós em Nutrologia - Unifesp"]
+- experiencia: "10 anos - hospitais públicos e privados"
+
+**Compliance**
+- status_registro: "ativo" // "suspenso", "cancelado"
+- certificados: [ { tipo: "CRM", url: "...pdf" } ]
+- aceite_termos: true
+
+**Licenciamento Lilu**
+- plano: "anual"
+- valor: 1200.00
+- status_licenca: "ativo" // "inadimplente", "cancelado"
+- historico_notas: [ { mes: "2024-08", pago: true } ]
+- renovacao_automatica: true
+- data_expiracao: "2025-08-31"
+- alertas: ["Licença vence em 30 dias"]
+
+**Conexão Health Wallet**
+- consentimento_paciente: true
+- escopos_consentidos: ["consultas", "exames"]
+- historico_acesso: [ { cpf_paciente: "222.333.444-55", data: "2024-09-20" } ]
+
+**Engajamento/Performance**
+- pacientes_conectados: 23
+- frequencia_uso: "semanal"
+- nps: 9.2
+- feedbacks: [ "Ótimo atendimento", "Ágil" ]
+- relatorios: [ { tipo: "evolução", url: "...pdf" } ]
+
+**Segurança**
+- criptografia: "AES-256"
+- logs_auditoria: [ { acao: "acesso", data: "2024-09-20", usuario: "admin" } ]
+- papel: "profissional" // "admin", "auditoria"
+
+**Interoperabilidade**
+- fhir_practitioner_id: "Pract123"
+- fhir_endpoints: [ "/Practitioner", "/Encounter", "/Observation" ]
+
+---
+
+# 2. Regras de Negócio & Fluxos
+
+**Pré-condições**
+- Profissional cadastrado, com documentos válidos e termo aceito.
+- Licença ativa para acessar/editar Health Wallet.
+
+**Fluxos principais**
+- Cadastro/edição → Validação conselho e documentos.
+- Mudança status licença → (ativo/inadimplente/cancelado); bloqueio automático se não ativa.
+- Consentimento paciente → obrigatório para acesso Health Wallet; escopos granulares.
+- Toda ação relevante → registro em log de auditoria.
+
+**Estados**
+- Profissional: ativo, suspenso, cancelado.
+- Licença: ativa, inadimplente, cancelada.
+- Consentimento: concedido (escopos), revogado.
+
+**Pós-condições**
+- FHIR mapeamento atualizado.
+- Logs e estados sincronizados.
+
+---
+
+# 3. Esquema de Dados (JSON/FHIR Mapping)
+
+```json
+{
+  "id": "prof-abc123",
+  "nome": "Dra. Maria Oliveira",
+  "cpf": "123.456.789-09",
+  "nascimento": "1985-07-01",
+  "contatos": {
+    "email": "maria@exemplo.com",
+    "telefone": "+55 11 98765-4321"
+  },
+  "foto_url": "https://lilu.com/fotos/123.jpg",
+  "conselho": {
+    "tipo": "CRM",
+    "numero": "123456",
+    "uf": "SP"
+  },
+  "especialidades": ["Clínica Geral", "Nutrologia"],
+  "formacao": "Medicina - USP",
+  "cursos": ["Pós em Nutrologia - Unifesp"],
+  "experiencia": "10 anos",
+  "compliance": {
+    "status_registro": "ativo",
+    "certificados": [ { "tipo": "CRM", "url": "..." } ],
+    "aceite_termos": true
+  },
+  "licenciamento": {
+    "plano": "anual",
+    "valor": 1200,
+    "status": "ativo",
+    "historico_notas": [{ "mes": "2024-08", "pago": true }],
+    "renovacao_automatica": true,
+    "data_expiracao": "2025-08-31",
+    "alertas": []
+  },
+  "health_wallet": {
+    "consentimento_paciente": true,
+    "escopos": ["consultas", "exames"]
+  },
+  "engajamento": {
+    "pacientes_conectados": 23,
+    "frequencia_uso": "semanal",
+    "nps": 9.2,
+    "feedbacks": []
+  },
+  "seguranca": {
+    "criptografia": "AES-256",
+    "logs": [],
+    "papel": "profissional"
+  },
+  "fhir": {
+    "practitioner_id": "Pract123",
+    "endpoints": ["/Practitioner", "/Encounter"]
+  }
+}
+```
+
+**FHIR Mapping (simplificado):**
+- Practitioner: nome, identificadores, contato, conselho
+- PractitionerRole: especialidades
+- DocumentReference: certificados
+- Encounter/Observation/MedicationRequest/DocumentReference: conexão Health Wallet
+
+**Pseudo-SQL:**
+
+```sql
+CREATE TABLE profissional (
+  id VARCHAR PRIMARY KEY,
+  nome VARCHAR,
+  cpf VARCHAR UNIQUE,
+  nascimento DATE,
+  foto_url VARCHAR,
+  conselho_tipo VARCHAR,
+  conselho_numero VARCHAR,
+  conselho_uf VARCHAR,
+  status_registro VARCHAR,
+  aceite_termos BOOLEAN,
+  plano VARCHAR,
+  valor DECIMAL,
+  status_licenca VARCHAR,
+  data_expiracao DATE,
+  renovacao_automatica BOOLEAN,
+  papel VARCHAR,
+  fhir_practitioner_id VARCHAR
+);
+```
+
+---
+
+# 4. Critérios de Aceite
+
+- Cadastro só é publicado se conselho validado e termo aceito.
+- Sem licença ativa → bloqueio imediato de Health Wallet.
+- Logs de todas ações relevantes disponíveis para auditoria.
+- Consentimento granular e revogável do paciente; sem consentimento, sem acesso.
+- Dados interoperáveis com FHIR (campos obrigatórios mapeados).
+- Interface exibe estados claros (ativo/inadimplente/suspenso/cancelado) e alertas de expiração.
+- Segurança: criptografia em repouso e logs de acesso.
+
+---
+
+# 5. Roteiro de Telas (Wireframe Descritivo)
+
+**A. Perfil Profissional**
+- Foto, nome, especialidades, status (badge colorida), botão para editar
+
+**B. Detalhes de Credenciais**
+- Conselho, nº registro, UF, especialidades, formação/cursos, upload certificados, status do registro
+
+**C. Compliance**
+- Termo de aceite (checkbox), lista de certificados anexados, status do registro
+
+**D. Licenciamento**
+- Plano atual, valor, status licenca (com cor), data expiração, botão renovar, alertas de expiração/inadimplência, histórico de pagamentos
+
+**E. Health Wallet**
+- Lista de pacientes conectados (com status de consentimento e escopos), histórico de acessos, botões de revogar consentimento
+
+**F. Engajamento/Performance**
+- Pacientes conectados, frequência de uso, NPS, feedbacks, download relatórios
+
+**G. Segurança & Logs**
+- Seção para logs/auditoria (visualizar ações recentes)
+- Papel do usuário (lido, não editável)
+
+**H. Interoperabilidade**
+- IDs FHIR, links para endpoints, documentação de integração
+
+---
