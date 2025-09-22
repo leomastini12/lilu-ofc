@@ -1,0 +1,519 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a//dev/null b/docs/frontend-preview/styles.css
+index 0000000000000000000000000000000000000000..172344538fb4fea4b0a354b0396465cdefd2f80c 100644
+--- a//dev/null
++++ b/docs/frontend-preview/styles.css
+@@ -0,0 +1,510 @@
++:root {
++  color-scheme: light;
++  font-family: "Inter", "Segoe UI", sans-serif;
++  --color-bg: #f4f6fb;
++  --color-surface: #ffffff;
++  --color-border: #d8deed;
++  --color-text: #18213a;
++  --color-muted: #6b7796;
++  --color-primary: #5a5df0;
++  --color-primary-dark: #3639c7;
++  --color-success: #3cb371;
++  --color-warning: #f6a429;
++  --color-danger: #e45c5c;
++  --shadow-soft: 0 12px 32px rgba(24, 33, 58, 0.08);
++}
++
++* {
++  box-sizing: border-box;
++  margin: 0;
++  padding: 0;
++}
++
++body {
++  background: var(--color-bg);
++  color: var(--color-text);
++  min-height: 100vh;
++  display: flex;
++  flex-direction: column;
++}
++
++.app-header {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  background: #fff;
++  padding: 1rem 1.5rem;
++  box-shadow: var(--shadow-soft);
++  position: sticky;
++  top: 0;
++  z-index: 10;
++}
++
++.logo {
++  font-weight: 700;
++  font-size: 1.25rem;
++  letter-spacing: 0.04em;
++}
++
++nav {
++  display: flex;
++  gap: 0.5rem;
++  flex-wrap: wrap;
++}
++
++.nav-btn {
++  border: none;
++  background: transparent;
++  padding: 0.5rem 0.75rem;
++  border-radius: 999px;
++  font-weight: 600;
++  color: var(--color-muted);
++  cursor: pointer;
++  transition: all 0.2s ease;
++}
++
++.nav-btn:hover,
++.nav-btn.active {
++  background: rgba(90, 93, 240, 0.12);
++  color: var(--color-primary);
++}
++
++main {
++  display: grid;
++  grid-template-columns: 300px 1fr;
++  padding: 1.5rem;
++  gap: 1.5rem;
++  flex: 1;
++}
++
++.side-panel {
++  display: flex;
++  flex-direction: column;
++  gap: 1.5rem;
++}
++
++.professional-card {
++  background: var(--color-surface);
++  border-radius: 1rem;
++  padding: 1.5rem;
++  box-shadow: var(--shadow-soft);
++  display: grid;
++  justify-items: center;
++  text-align: center;
++  gap: 0.75rem;
++}
++
++.professional-card img {
++  width: 96px;
++  height: 96px;
++  border-radius: 50%;
++  object-fit: cover;
++}
++
++.professional-card .role {
++  color: var(--color-muted);
++  font-size: 0.9rem;
++}
++
++.badge {
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  font-size: 0.75rem;
++  font-weight: 600;
++  padding: 0.25rem 0.75rem;
++  border-radius: 999px;
++  text-transform: uppercase;
++  letter-spacing: 0.04em;
++}
++
++.badge.status[data-state="active"],
++.badge.license[data-state="active"] {
++  background: rgba(60, 179, 113, 0.16);
++  color: var(--color-success);
++}
++
++.badge.status[data-state="warning"],
++.badge.license[data-state="delinquent"] {
++  background: rgba(246, 164, 41, 0.16);
++  color: var(--color-warning);
++}
++
++.badge.status[data-state="inactive"],
++.badge.license[data-state="suspended"] {
++  background: rgba(228, 92, 92, 0.16);
++  color: var(--color-danger);
++}
++
++.badge.neutral {
++  background: rgba(24, 33, 58, 0.08);
++  color: var(--color-text);
++}
++
++.quick-stats {
++  background: var(--color-surface);
++  border-radius: 1rem;
++  padding: 1.25rem;
++  box-shadow: var(--shadow-soft);
++}
++
++.quick-stats h3 {
++  font-size: 1rem;
++  margin-bottom: 1rem;
++}
++
++.quick-stats ul {
++  display: grid;
++  gap: 0.75rem;
++}
++
++.quick-stats li {
++  display: flex;
++  justify-content: space-between;
++  font-size: 0.9rem;
++}
++
++.quick-stats .label {
++  color: var(--color-muted);
++}
++
++.quick-stats .value {
++  font-weight: 600;
++}
++
++.quick-stats .positive {
++  color: var(--color-success);
++}
++
++.quick-stats .attention {
++  color: var(--color-warning);
++}
++
++.screen {
++  display: none;
++  flex-direction: column;
++  gap: 1.5rem;
++}
++
++.screen[data-active] {
++  display: flex;
++}
++
++.grid {
++  display: grid;
++  gap: 1.5rem;
++  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
++}
++
++.card {
++  background: var(--color-surface);
++  border-radius: 1rem;
++  padding: 1.5rem;
++  box-shadow: var(--shadow-soft);
++  display: flex;
++  flex-direction: column;
++  gap: 1rem;
++}
++
++.card.highlight {
++  border: 2px solid rgba(90, 93, 240, 0.24);
++}
++
++.card header {
++  display: flex;
++  justify-content: space-between;
++  align-items: center;
++  gap: 1rem;
++}
++
++.primary,
++.secondary {
++  border: none;
++  padding: 0.65rem 1.1rem;
++  border-radius: 0.75rem;
++  font-weight: 600;
++  cursor: pointer;
++  transition: transform 0.1s ease, box-shadow 0.1s ease;
++}
++
++.primary {
++  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
++  color: white;
++}
++
++.secondary {
++  background: rgba(90, 93, 240, 0.12);
++  color: var(--color-primary);
++}
++
++.primary:hover,
++.secondary:hover {
++  transform: translateY(-1px);
++  box-shadow: 0 8px 16px rgba(24, 33, 58, 0.12);
++}
++
++.usage,
++.stats {
++  display: flex;
++  justify-content: space-around;
++  gap: 1rem;
++}
++
++.usage-number,
++.stats-number {
++  font-size: 2rem;
++  font-weight: 700;
++}
++
++.usage-label,
++.stats-label {
++  color: var(--color-muted);
++  font-size: 0.85rem;
++}
++
++.stats-number.positive {
++  color: var(--color-success);
++}
++
++.timeline,
++.list {
++  list-style: none;
++  display: grid;
++  gap: 1rem;
++}
++
++.timeline li,
++.list li {
++  display: grid;
++  gap: 0.35rem;
++}
++
++.timeline time,
++.list .meta {
++  font-size: 0.8rem;
++  color: var(--color-muted);
++}
++
++.table,
++.table table {
++  width: 100%;
++  border-collapse: collapse;
++  font-size: 0.9rem;
++}
++
++th,
++td {
++  padding: 0.75rem;
++  text-align: left;
++  border-bottom: 1px solid var(--color-border);
++}
++
++.form-grid {
++  display: grid;
++  gap: 1rem;
++  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
++}
++
++label {
++  font-size: 0.85rem;
++  color: var(--color-muted);
++  display: grid;
++  gap: 0.35rem;
++}
++
++input {
++  padding: 0.75rem;
++  border-radius: 0.75rem;
++  border: 1px solid var(--color-border);
++  font-size: 0.95rem;
++}
++
++input[readonly] {
++  background: rgba(24, 33, 58, 0.04);
++  cursor: not-allowed;
++}
++
++.toggles {
++  display: flex;
++  align-items: center;
++  gap: 0.75rem;
++}
++
++.switch {
++  position: relative;
++  display: inline-block;
++  width: 52px;
++  height: 28px;
++}
++
++.switch input {
++  opacity: 0;
++  width: 0;
++  height: 0;
++}
++
++.slider {
++  position: absolute;
++  cursor: pointer;
++  inset: 0;
++  background-color: rgba(24, 33, 58, 0.18);
++  border-radius: 999px;
++  transition: 0.4s;
++}
++
++.slider:before {
++  position: absolute;
++  content: "";
++  height: 20px;
++  width: 20px;
++  left: 4px;
++  bottom: 4px;
++  background-color: white;
++  transition: 0.4s;
++  border-radius: 50%;
++  box-shadow: 0 4px 12px rgba(24, 33, 58, 0.18);
++}
++
++input:checked + .slider {
++  background-color: rgba(90, 93, 240, 0.6);
++}
++
++input:checked + .slider:before {
++  transform: translateX(24px);
++}
++
++.consent-grid {
++  display: grid;
++  gap: 1.25rem;
++  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
++}
++
++.card.patient {
++  border-top: 4px solid transparent;
++}
++
++.card.patient[data-state="full"] {
++  border-top-color: var(--color-success);
++}
++
++.card.patient[data-state="partial"] {
++  border-top-color: var(--color-warning);
++}
++
++.card.patient[data-state="revoked"] {
++  border-top-color: var(--color-danger);
++}
++
++.scopes {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.5rem;
++}
++
++.chip {
++  padding: 0.35rem 0.75rem;
++  border-radius: 999px;
++  font-size: 0.8rem;
++  font-weight: 600;
++}
++
++.chip.active {
++  background: rgba(90, 93, 240, 0.16);
++  color: var(--color-primary);
++}
++
++.chip.inactive {
++  background: rgba(24, 33, 58, 0.08);
++  color: var(--color-muted);
++  text-decoration: line-through;
++}
++
++.status-list {
++  list-style: none;
++  display: grid;
++  gap: 0.75rem;
++}
++
++.status-list li {
++  display: flex;
++  align-items: center;
++  gap: 0.5rem;
++}
++
++.dot {
++  width: 10px;
++  height: 10px;
++  border-radius: 50%;
++}
++
++.dot.ok {
++  background: var(--color-success);
++}
++
++.dot.warn {
++  background: var(--color-warning);
++}
++
++.dot.error {
++  background: var(--color-danger);
++}
++
++.state-toggle {
++  position: fixed;
++  bottom: 1.5rem;
++  right: 1.5rem;
++  display: flex;
++  align-items: center;
++  gap: 0.5rem;
++  background: var(--color-surface);
++  padding: 0.75rem 1rem;
++  border-radius: 999px;
++  box-shadow: var(--shadow-soft);
++}
++
++.state-toggle button {
++  border: none;
++  background: rgba(24, 33, 58, 0.08);
++  padding: 0.4rem 0.9rem;
++  border-radius: 999px;
++  font-weight: 600;
++  cursor: pointer;
++  color: var(--color-muted);
++}
++
++.state-toggle button.active {
++  background: rgba(90, 93, 240, 0.2);
++  color: var(--color-primary);
++}
++
++@media (max-width: 1024px) {
++  main {
++    grid-template-columns: 1fr;
++  }
++
++  .side-panel {
++    flex-direction: row;
++    overflow-x: auto;
++  }
++
++  .professional-card,
++  .quick-stats {
++    min-width: 260px;
++  }
++}
++
++@media (max-width: 768px) {
++  nav {
++    justify-content: center;
++  }
++
++  main {
++    padding: 1rem;
++  }
++
++  .state-toggle {
++    left: 50%;
++    transform: translateX(-50%);
++    right: auto;
++  }
++}
+ 
+EOF
+)
